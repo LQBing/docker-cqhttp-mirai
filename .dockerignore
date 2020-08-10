@@ -1,0 +1,7 @@
+setting.yml
+config.txt
+device.json
+.env.example
+.env
+/log/
+/tmp/

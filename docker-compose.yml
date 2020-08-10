@@ -1,0 +1,11 @@
+version: "3"
+services:
+  mirai:
+    image: lqbing/cqhttp-mirai
+    restart: always
+    volumes:
+      - ./config.txt:/workdir/config.txt
+      - ./setting.yml:/workdir/plugins/setting.yml
+      - ./device.json:/workdir/device.json
+    stdin_open: true
+    tty: true

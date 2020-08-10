@@ -1,0 +1,8 @@
+setting.yml
+config.txt
+device.json
+.idea
+.env
+/log/
+/tmp/
+cqhttp-mirai.jar

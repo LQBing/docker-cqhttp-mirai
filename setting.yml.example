@@ -1,0 +1,11 @@
+# 要进行配置的QQ号 (Mirai支持多帐号登录, 故需要对每个帐号进行单独设置)
+'0987654321': # 这里是第二个QQ Bot的配置
+  ws_reverse:
+    - enable: true
+      postMessageFormat: string
+      reverseHost: 
+      reversePort: 
+      reversePath: /ws
+      reconnectInterval: 3000
+
+# 详细说明请参考 https://github.com/yyuueexxiinngg/cqhttp-mirai
