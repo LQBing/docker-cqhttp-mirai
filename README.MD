@@ -28,11 +28,11 @@ PS： 第一次使用往往会要求输入验证码，有时候还会给个网�
 
 有两种方式启动：
 
-[1 使用.env文件配置QQ账号密码等信息快速运行，但是只能单账号运行](#env)
+[1 使用.env文件配置QQ账号密码等信息快速运行，但是只能单账号运行](#使用env文件带入参数运行)
 
-[2 挂载配置文件的方式运行（多个用户的情况下用环境变量无法满足需求，可以用挂载配置文件的方式达到目的）](#mount)
+[2 挂载配置文件的方式运行（多个用户的情况下用环境变量无法满足需求，可以用挂载配置文件的方式达到目的）](#挂载配置文件的方式运行)
 
-## <span id="env">使用.env文件带入参数运行</span>
+## 使用.env文件带入参数运行
 
 创建.env，然后修改其中内容
 
@@ -41,13 +41,13 @@ cp .env.example .env
 vi .env
 ```
 
-第一次运行（第一次使用往往会要求输入验证码，有时候还会给个网址复制链接然后手机QQ扫描二维码验证。所以第一次不能直接挂后台，运行需要`docker run -it`运行来通过验证程序。）
-
-QQ账号在当前设备第一次运行需要输入验证码（device.json文件不能丢，否则会造成要重新输入验证码的问题）。如果几次不对（反正我肉眼凡胎没几次对的）会在提示在`/tmp`目录下生成验证码图片，这时候挂载出来的`/tmp`目录就有用了。之后一些账号可能会再提示一长串的连接地址，复制出来浏览器打开，然后手机同账号QQ扫描二维码通过验证后再回车才能完成登录过程。
+第一次运行，运行下面命令，然后输入`login 123456789 password`（替换自己的用户名密码）（第一次使用往往会要求输入验证码，有时候还会给个网址复制链接然后手机QQ扫描二维码验证。所以第一次不能直接挂后台，运行需要`docker run -it`运行来通过验证程序。）
 
 ```shell script
-docker run --rm -it --name cqhttp-mirai --env-file .env -v $(pwd)/tmp:/tmp lqbing/cqhttp-mirai
+docker run --rm -it --name cqhttp-mirai --env-file .env -v $(pwd)/tmp:/tmp  --entrypoint="/bin/bash" lqbing/cqhttp-mirai run.sh
 ```
+
+PS：QQ账号在当前设备第一次运行需要输入验证码（device.json文件不能丢，腾讯会根据macAddress判断是否要重新输入验证码）。如果几次不对（反正我肉眼凡胎没几次对的）会在提示在`/tmp`目录下生成验证码图片，这时候挂载出来的`/tmp`目录就有用了。之后一些账号可能会再提示一长串的连接地址，复制出来浏览器打开，然后手机同账号QQ扫描二维码通过验证后再回车才能完成登录过程。
 
 上面的步骤完成，并且屏幕有输出QQ的聊天记录的话就意味着验证通过了，这时候`ctrl+c`退出，下面有两个选择，一个是`docker run`的方式启动，一种是`docker-compose`的方式启动：
 
@@ -75,7 +75,7 @@ services:
 
 ```
 
-### <span id="mount">挂载配置文件的方式运行</span>
+### 挂载配置文件的方式运行
 
 PS：注意`config.txt`,`setting.yml`,`device.json`三个文件是否存在,如果不存在可能造成运行问题。
 
@@ -93,13 +93,15 @@ if [ ! -f "device.json" ]; then
 fi
 ```
 
-然后配置文件具体怎么修改参考[配置文件说明](#config)
+然后配置文件具体怎么修改参考[配置文件说明](#配置文件说明)
 
-第一次运行：
+第一次运行，运行下面的命令，然后输入`login 123456789 password`（替换自己的用户名密码）（第一次使用往往会要求输入验证码，有时候还会给个网址复制链接然后手机QQ扫描二维码验证。所以第一次不能直接挂后台，运行需要`docker run -it`运行来通过验证程序。）：
 
 ```bash
-docker run --rm -it --name cqhttp-mirai -v $(pwd)/config.txt:/workdir/config.txt -v $(pwd)/setting.yml:/workdir/plugins/setting.yml -v $(pwd)/device.json:/workdir/device.json -v $(pwd)/tmp:/tmp lqbing/cqhttp-mirai
+docker run --rm -it --name cqhttp-mirai -v $(pwd)/config.txt:/workdir/config.txt -v $(pwd)/setting.yml:/workdir/plugins/setting.yml -v $(pwd)/device.json:/workdir/device.json -v $(pwd)/tmp:/tmp --entrypoint="/bin/bash" lqbing/cqhttp-mirai run.sh
 ```
+
+PS：QQ账号在当前设备第一次运行需要输入验证码（device.json文件不能丢，腾讯会根据macAddress判断是否要重新输入验证码）。如果几次不对（反正我肉眼凡胎没几次对的）会在提示在`/tmp`目录下生成验证码图片，这时候挂载出来的`/tmp`目录就有用了。之后一些账号可能会再提示一长串的连接地址，复制出来浏览器打开，然后手机同账号QQ扫描二维码通过验证后再回车才能完成登录过程。
 
 上面的步骤完成，并且屏幕有输出QQ的聊天记录的话就意味着验证通过了，这时候`ctrl+c`退出，下面有两个选择，一个是`docker run`的方式启动，一种是`docker-compose`的方式启动：
 
@@ -148,7 +150,7 @@ docker stop cqhttp-mirai
 docker rm cqhttp-mirai
 ```
 
-## <a id="config">配置文件说明</a>
+## 配置文件说明
 
 ### config.txt
 

@@ -10,5 +10,5 @@ RUN wget https://github.com/yyuueexxiinngg/cqhttp-mirai/releases/download/0.2.1/
 ADD device.json.example device.json
 ADD config.txt.example config.txt
 ADD setting.yml.example plugins/setting.yml
-ADD entry.sh entry.sh
-ENTRYPOINT ["/bin/sh", "/workdir/entry.sh"]
+COPY *.sh ./
+ENTRYPOINT ["/bin/sh", "entry.sh"]
