@@ -22,31 +22,22 @@ else
   if [ ! -f "device.json" ]; then
     cp device.json.example device.json
   fi
-  # creat config.txt
-  echo "creating config.txt"
-  if [ -z "$NOTIFY_ACCOUNT" ]; then
-    cat >config.txt <<EOF
-login $QQ_ACCOUNT $QQ_PASSWORD
-
-EOF
-  else
-    cat >config.txt <<EOF
-login $QQ_ACCOUNT $QQ_PASSWORD
-say $NOTIFY_ACCOUNT cqhttp_mirai_published!
-
-EOF
-  fi
-  # create plugins/setting.yml
-  echo "creating plugins/setting.yml"
-  cat >plugins/setting.yml <<EOF
-"$QQ_ACCOUNT":
-  ws_reverse:
-    - enable: true
-      postMessageFormat: string
-      reverseHost: $REVERSE_HOST
-      reversePort: $REVERSE_PORT
-      reversePath: /ws
-      reconnectInterval: 3000
+  # create /workdir/config/OneBot/settings.yml
+  echo "creating  /workdir/config/OneBot/settings.yml"
+  mkdir -p /workdir/config/OneBot
+  cat > /workdir/config/OneBot/settings.yml <<EOF
+bots:
+  $QQ_ACCOUNT:
+    ws_reverse:
+      - enable: true
+        postMessageFormat: string
+        reverseHost: $REVERSE_HOST
+        reversePort: $REVERSE_PORT
+        accessToken: ''
+        reversePath: '/ws'
+        useUniversal: true
+        useTLS: false
+        reconnectInterval: 3000
 EOF
 fi
 
